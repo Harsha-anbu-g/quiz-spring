@@ -42,24 +42,24 @@ src/main/java/com/example/quizapp/
 
 ### Question
 
-| Field            | Type    | Description                        |
-|------------------|---------|------------------------------------|
-| id               | Integer | Auto-generated primary key         |
-| questionTitle    | String  | The question text                  |
-| option1          | String  | First answer option                |
-| option2          | String  | Second answer option               |
-| option3          | String  | Third answer option                |
-| option4          | String  | Fourth answer option               |
-| rightAnswer      | String  | The correct answer                 |
-| difficultyLevel  | String  | Difficulty (e.g., Easy, Medium)    |
-| category         | String  | Category (e.g., Java, Python)      |
+| Field           | Type    | Description                     |
+| --------------- | ------- | ------------------------------- |
+| id              | Integer | Auto-generated primary key      |
+| questionTitle   | String  | The question text               |
+| option1         | String  | First answer option             |
+| option2         | String  | Second answer option            |
+| option3         | String  | Third answer option             |
+| option4         | String  | Fourth answer option            |
+| rightAnswer     | String  | The correct answer              |
+| difficultyLevel | String  | Difficulty (e.g., Easy, Medium) |
+| category        | String  | Category (e.g., Java, Python)   |
 
 ### Quiz
 
-| Field     | Type            | Description                          |
-|-----------|-----------------|--------------------------------------|
-| id        | Integer         | Auto-generated primary key           |
-| title     | String          | Quiz title                           |
+| Field     | Type            | Description                            |
+| --------- | --------------- | -------------------------------------- |
+| id        | Integer         | Auto-generated primary key             |
+| title     | String          | Quiz title                             |
 | questions | List\<Question> | Many-to-Many relationship to questions |
 
 ---
@@ -68,15 +68,18 @@ src/main/java/com/example/quizapp/
 
 ### Question Endpoints (`/Question`)
 
-| Method | Endpoint                      | Description                          |
-|--------|-------------------------------|--------------------------------------|
-| GET    | `/Question/allQuestions`       | Retrieve all questions               |
+| Method | Endpoint                        | Description                        |
+| ------ | ------------------------------- | ---------------------------------- |
+| GET    | `/Question/allQuestions`        | Retrieve all questions             |
 | GET    | `/Question/category/{category}` | Get questions filtered by category |
-| POST   | `/Question/add`               | Add a new question                   |
+| POST   | `/Question/add`                 | Add a new question                 |
+| PUT    | `/Question/update/{id}`         | Update an existing question by ID  |
+| DELETE | `/Question/delete/{id}`         | Delete a question by ID            |
 
 #### Add a Question — `POST /Question/add`
 
 **Request Body:**
+
 ```json
 {
   "questionTitle": "What is the size of int in Java?",
@@ -90,25 +93,53 @@ src/main/java/com/example/quizapp/
 }
 ```
 
+#### Update a Question — `PUT /Question/update/{id}`
+
+**Request Body:**
+
+```json
+{
+  "questionTitle": "What is the default value of int in Java?",
+  "option1": "0",
+  "option2": "null",
+  "option3": "1",
+  "option4": "undefined",
+  "rightAnswer": "0",
+  "difficultyLevel": "Easy",
+  "category": "Java"
+}
+```
+
+#### Delete a Question — `DELETE /Question/delete/{id}`
+
+**Example:**
+
+```
+DELETE /Question/delete/5
+```
+
+**Response:** `"Question deleted successfully"` with HTTP 200, or `"Failed to delete Question"` with HTTP 400.
+
 ### Quiz Endpoints (`/quiz`)
 
-| Method | Endpoint             | Description                                      |
-|--------|----------------------|--------------------------------------------------|
-| POST   | `/quiz/create`       | Create a quiz with random questions from a category |
-| GET    | `/quiz/get/{id}`     | Get quiz questions (without correct answers)     |
-| POST   | `/quiz/submit/{id}`  | Submit answers and get the score                 |
+| Method | Endpoint            | Description                                         |
+| ------ | ------------------- | --------------------------------------------------- |
+| POST   | `/quiz/create`      | Create a quiz with random questions from a category |
+| GET    | `/quiz/get/{id}`    | Get quiz questions (without correct answers)        |
+| POST   | `/quiz/submit/{id}` | Submit answers and get the score                    |
 
 #### Create a Quiz — `POST /quiz/create`
 
 **Query Parameters:**
 
-| Parameter  | Type   | Description                          |
-|------------|--------|--------------------------------------|
-| category   | String | Question category to pull from       |
-| numQ       | int    | Number of questions in the quiz      |
-| title      | String | Title for the quiz                   |
+| Parameter | Type   | Description                     |
+| --------- | ------ | ------------------------------- |
+| category  | String | Question category to pull from  |
+| numQ      | int    | Number of questions in the quiz |
+| title     | String | Title for the quiz              |
 
 **Example:**
+
 ```
 POST /quiz/create?category=Java&numQ=5&title=Java Basics Quiz
 ```
@@ -118,6 +149,7 @@ POST /quiz/create?category=Java&numQ=5&title=Java Basics Quiz
 Returns questions wrapped in `QuestionWrapper` (without the correct answer), so users cannot see the right answer before submitting.
 
 **Response:**
+
 ```json
 [
   {
@@ -134,6 +166,7 @@ Returns questions wrapped in `QuestionWrapper` (without the correct answer), so 
 #### Submit Quiz — `POST /quiz/submit/{id}`
 
 **Request Body:**
+
 ```json
 [
   { "id": 1, "response": "4 bytes" },
@@ -173,6 +206,7 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 ## Getting Started
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd quiz-spring
@@ -183,11 +217,13 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
    - Update the database credentials in `src/main/resources/application.properties`.
 
 3. **Build the project**
+
    ```bash
    ./mvnw clean install
    ```
 
 4. **Run the application**
+
    ```bash
    ./mvnw spring-boot:run
    ```
@@ -198,17 +234,17 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 ## Screenshots
 
-| Screenshot | Description |
-|------------|-------------|
-| ![Add Question](Screenshot/add-question.png) | Adding a new question |
-| ![All Questions](Screenshot/findall.png) | Fetching all questions |
-| ![By Category](Screenshot/findall-category.png) | Filtering questions by category |
-| ![Category Java](Screenshot/category_java.png) | Java category questions |
-| ![Get Quiz](Screenshot/get-1.png) | Retrieving quiz questions |
-| ![201 Created](Screenshot/210-created.png) | Successful creation response |
-| ![404 Not Found](Screenshot/404-not%20found.png) | Not found error |
-| ![Java Random](Screenshot/java%20random.png) | Random Java questions |
-| ![Postgre Answer](Screenshot/answer%20from%20postgre.png) | Data from PostgreSQL |
+| Screenshot                                                | Description                     |
+| --------------------------------------------------------- | ------------------------------- |
+| ![Add Question](Screenshot/add-question.png)              | Adding a new question           |
+| ![All Questions](Screenshot/findall.png)                  | Fetching all questions          |
+| ![By Category](Screenshot/findall-category.png)           | Filtering questions by category |
+| ![Category Java](Screenshot/category_java.png)            | Java category questions         |
+| ![Get Quiz](Screenshot/get-1.png)                         | Retrieving quiz questions       |
+| ![201 Created](Screenshot/210-created.png)                | Successful creation response    |
+| ![404 Not Found](Screenshot/404-not%20found.png)          | Not found error                 |
+| ![Java Random](Screenshot/java%20random.png)              | Random Java questions           |
+| ![Postgre Answer](Screenshot/answer%20from%20postgre.png) | Data from PostgreSQL            |
 
 ---
 
