@@ -18,7 +18,8 @@ public class QuestionController {
     @GetMapping("allQuestions")
     public ResponseEntity<List<Question>> getAllQuestions() {
         return questionService.getAllQuestions();
-    }
+        //it goes to service class to get data
+    }  // this brings data from database after connection is made in resource-application.properties
 
     @GetMapping("category/{category}")
     public ResponseEntity<List<Question>> getQuestionsByCategory(@PathVariable String category) {

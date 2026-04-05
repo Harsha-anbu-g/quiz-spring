@@ -232,7 +232,23 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
 ---
 
-## Screenshots
+## PostgreSQL Database Screenshots (pgAdmin)
+
+### Question Table
+![Question Table](Screenshot%20postgresql/Question%20Table.png)
+
+### Quiz Table
+![Quiz Table](Screenshot%20postgresql/Quiz%20Table.png)
+
+### Quiz-Question Relationship Table
+![Question-Quiz Relationship](Screenshot%20postgresql/Question-Quiz.png)
+
+### Quiz DB Overview
+![Quiz DB](Screenshot%20postgresql/Quiz%20DB.png)
+
+---
+
+## API Screenshots
 
 | Screenshot                                                | Description                     |
 | --------------------------------------------------------- | ------------------------------- |
